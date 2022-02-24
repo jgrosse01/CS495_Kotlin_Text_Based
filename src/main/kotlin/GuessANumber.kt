@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
             println("And if you guess 10 in a row, you get an extra special prize!!! Enter -1 to exit.")
 
             // initialize userInput to an integer that requires a safe call to assign
-            var userInput: Int?
+            var userInput: Int
             // initialize number to an integer without safe call requirements
 
             // temp variable to read a line in as a string
@@ -43,9 +43,15 @@ fun main(args: Array<String>) {
             // attempt to cast the read line to an int. if it fails then the value is either string or null so print
             // the invalid input message and continue to the next step of the priorly marked loop
             try {
-                userInput = readIn?.toInt()
+                // null-asserted meaning this cannot be null. removes need for safe call (fixed in class)
+                userInput = readIn!!.toInt()
             } catch (e: Exception) {
-                println("Invalid Input. Input an INTEGER between ONE and TEN.")
+                println("Invalid Input. Input an INTEGER between ONE and TEN. (or -1 to exit).")
+                continue@loop
+            }
+
+            if (userInput < -1 || userInput > 10 || userInput == 0) {
+                println("Invalid Input. Input an INTEGER between ONE and TEN. (or -1 to exit).")
                 continue@loop
             }
 
@@ -101,14 +107,9 @@ fun main(args: Array<String>) {
                             // print question
                             println("Would you like to play again? (Y/N)")
                             // switch to check cases
-                            when (readLine()) {
+                            when (readLine()?.lowercase()) {
                                 // yes answers continue to the top level loop after printing lines to make space
                                 // no answers exit the process
-                                "Y" -> {
-                                    printLines(18)
-                                    continue@init
-                                }
-                                "N" -> {exitProcess(0)}
                                 "y" -> {
                                     printLines(18)
                                     continue@init
